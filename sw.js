@@ -1,4 +1,4 @@
-const CACHE = 'parkpay-v1';
+const CACHE = 'parkpay-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -23,16 +23,36 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+
+  // Network-first for our own app files so a new deploy shows up immediately when
+  // online; fall back to cache (last good copy) only when the network is unavailable.
+  if (url.origin === self.location.origin) {
+    e.respondWith(
+      fetch(req).then(res => {
+        if (res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(CACHE).then(cache => cache.put(req, clone));
+        }
+        return res;
+      }).catch(() => caches.match(req).then(cached => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Cross-origin (fonts, Tesseract CDN): cache-first is fine — these are versioned/stable.
   e.respondWith(
-    caches.match(e.request).then(cached => {
+    caches.match(req).then(cached => {
       if (cached) return cached;
-      return fetch(e.request).then(response => {
-        if (!response || response.status !== 200 || response.type === 'opaque') return response;
-        const clone = response.clone();
-        caches.open(CACHE).then(cache => cache.put(e.request, clone));
-        return response;
-      }).catch(() => caches.match('./index.html'));
+      return fetch(req).then(res => {
+        if (res && res.status === 200 && res.type !== 'opaque') {
+          const clone = res.clone();
+          caches.open(CACHE).then(cache => cache.put(req, clone));
+        }
+        return res;
+      });
     })
   );
 });
