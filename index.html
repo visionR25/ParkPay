@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0D0D0D" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="ParkPay" />
+  <meta name="description" content="Scan parking tickets and pay fines faster" />
+  <title>ParkPay</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── ONBOARDING ── -->
+  <div id="screen-onboarding" class="screen active">
+    <div class="onboarding-wrap">
+      <div class="onboarding-logo">P</div>
+      <h1 class="onboarding-title">ParkPay</h1>
+      <p class="onboarding-sub">Scan your ticket. Get straight to the payment page. No hunting around.</p>
+      <div class="onboarding-form">
+        <label class="field-label">Your vehicle registration</label>
+        <input id="onboarding-reg" type="text" class="reg-input" placeholder="AB12 CDE" maxlength="8" autocomplete="off" autocapitalize="characters" />
+        <button id="onboarding-btn" class="btn-primary">Get started</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HOME ── -->
+  <div id="screen-home" class="screen">
+    <div class="top-bar">
+      <div>
+        <div class="top-bar-label">ParkPay</div>
+        <div class="top-bar-title" id="home-greeting">Good morning</div>
+        <div class="top-bar-sub" id="home-sub">No fines tracked</div>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div class="card vehicle-card" id="vehicle-card">
+        <div class="card-label">Your vehicle</div>
+        <div class="vehicle-card-inner">
+          <div class="reg-plate" id="home-reg">—</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="card-hint">Tap to manage vehicles</div>
+      </div>
+      <button class="btn-primary btn-scan" id="scan-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Scan a ticket
+      </button>
+      <button class="btn-secondary" id="history-nav-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Fine history
+      </button>
+      <div id="fines-section"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-screen="home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="scan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Scan</span>
+      </button>
+      <button class="nav-item" data-screen="history">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </button>
+      <button class="nav-item" data-screen="settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ── SCAN ── -->
+  <div id="screen-scan" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" data-back="home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div>
+        <div class="top-bar-label">Scan ticket</div>
+        <div class="top-bar-title">Point at PCN number</div>
+        <div class="top-bar-sub">Keep the reference number inside the frame</div>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div class="camera-wrap" id="camera-wrap">
+        <video id="camera-feed" autoplay playsinline muted></video>
+        <div class="scan-overlay">
+          <div class="scan-frame">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+            <div class="scan-line"></div>
+          </div>
+        </div>
+        <canvas id="scan-canvas" style="display:none;"></canvas>
+      </div>
+
+      <div class="scan-status" id="scan-status">Starting camera...</div>
+
+      <div class="card" id="extracted-card" style="display:none;">
+        <div class="card-label">Scanned details — please confirm</div>
+        <div class="extracted-row">
+          <span class="ext-key">PCN reference</span>
+          <span class="ext-val amber" id="ext-pcn">—</span>
+        </div>
+        <div class="extracted-row">
+          <span class="ext-key">Vehicle reg</span>
+          <span class="ext-val" id="ext-reg">—</span>
+        </div>
+        <div class="extracted-row">
+          <span class="ext-key">Council</span>
+          <span class="ext-val" id="ext-issuer">—</span>
+        </div>
+      </div>
+
+      <div id="scan-actions" style="display:none;">
+        <button class="btn-primary" id="confirm-scan-btn">Confirm &amp; find payment page →</button>
+        <button class="btn-secondary" id="rescan-btn">Scan again</button>
+      </div>
+
+      <div class="divider-text">or enter manually</div>
+
+      <button class="btn-secondary" id="manual-btn">Enter PCN manually</button>
+
+      <div id="manual-form" style="display:none;">
+        <div class="card">
+          <div class="card-label" style="margin-bottom:10px;">Manual entry</div>
+          <label class="field-label">PCN reference number</label>
+          <input id="manual-pcn" type="text" class="text-input" placeholder="e.g. CR12345678" autocapitalize="characters" />
+          <label class="field-label" style="margin-top:12px;">Vehicle registration</label>
+          <input id="manual-reg-input" type="text" class="text-input" placeholder="e.g. AB12 CDE" autocapitalize="characters" />
+          <p class="field-hint">The council is identified automatically from the PCN reference.</p>
+          <button class="btn-primary" id="manual-submit-btn" style="margin-top:14px;">Find payment page →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FINE DETAIL ── -->
+  <div id="screen-detail" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" data-back="history">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div>
+        <div class="top-bar-label" id="detail-council">Council</div>
+        <div class="top-bar-title">Fine details</div>
+        <div class="top-bar-sub" id="detail-ref-sub">—</div>
+      </div>
+    </div>
+    <div class="screen-body">
+
+      <div id="unknown-council-msg" class="warning-card" style="display:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Council not recognised from this PCN prefix. Check your ticket and try entering manually, or visit your local council website.
+      </div>
+
+      <div class="card">
+        <div class="detail-row"><span class="det-key">PCN reference</span><span class="det-val amber-text" id="detail-pcn-val">—</span></div>
+        <div class="detail-row"><span class="det-key">Vehicle reg</span><span class="det-val" id="detail-reg-val">—</span></div>
+        <div class="detail-row"><span class="det-key">Issuing council</span><span class="det-val" id="detail-council-val">—</span></div>
+        <div class="detail-row"><span class="det-key">Date added</span><span class="det-val" id="detail-date-val">—</span></div>
+      </div>
+
+      <div class="info-card">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Tap "View &amp; pay fine" to open the council's payment page. The real fine amount, deadline and payment options are shown there.
+      </div>
+
+      <button class="btn-primary" id="pay-now-btn">View &amp; pay fine</button>
+      <button class="btn-ghost" id="delete-fine-btn">Remove from tracker</button>
+    </div>
+  </div>
+
+  <!-- ── HISTORY ── -->
+  <div id="screen-history" class="screen">
+    <div class="top-bar">
+      <div>
+        <div class="top-bar-label">ParkPay</div>
+        <div class="top-bar-title">Fine history</div>
+        <div class="top-bar-sub" id="history-reg-sub">All vehicles</div>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div id="history-list"></div>
+      <div id="history-empty" class="empty-state" style="display:none;">
+        <div class="empty-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <p>No fines tracked yet</p>
+        <span>Scanned tickets appear here</span>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" data-screen="home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="scan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Scan</span>
+      </button>
+      <button class="nav-item active" data-screen="history">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </button>
+      <button class="nav-item" data-screen="settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ── SETTINGS ── -->
+  <div id="screen-settings" class="screen">
+    <div class="top-bar">
+      <div>
+        <div class="top-bar-label">ParkPay</div>
+        <div class="top-bar-title">Settings</div>
+        <div class="top-bar-sub">Manage your vehicles</div>
+      </div>
+    </div>
+    <div class="screen-body">
+      <div class="card">
+        <div class="card-label" style="margin-bottom:12px;">Saved vehicles</div>
+        <div id="settings-vehicles-list"></div>
+        <button class="btn-secondary" id="settings-add-vehicle" style="margin-top:8px;">+ Add vehicle</button>
+      </div>
+      <div class="card">
+        <div class="card-label" style="margin-bottom:8px;">About</div>
+        <div class="detail-row"><span class="det-key">Version</span><span class="det-val">1.0.0</span></div>
+        <div class="detail-row"><span class="det-key">Councils covered</span><span class="det-val">100+</span></div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-item" data-screen="home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="scan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Scan</span>
+      </button>
+      <button class="nav-item" data-screen="history">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </button>
+      <button class="nav-item active" data-screen="settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ── VEHICLE BOTTOM SHEET ── -->
+  <div id="sheet-overlay" class="sheet-overlay hidden"></div>
+  <div id="vehicle-sheet" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Your vehicles</div>
+    <div id="sheet-vehicles-list"></div>
+    <div class="add-vehicle-row" id="add-vehicle-toggle">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add new vehicle
+    </div>
+    <div id="add-vehicle-form" style="display:none;">
+      <input id="new-reg-input" type="text" class="text-input" placeholder="e.g. ZZ99 XYZ" autocapitalize="characters" maxlength="8" />
+      <button class="btn-primary" id="save-new-reg" style="margin-top:10px;">Save vehicle</button>
+    </div>
+    <button class="btn-ghost" id="close-sheet" style="margin-top:8px;">Cancel</button>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
