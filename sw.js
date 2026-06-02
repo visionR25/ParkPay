@@ -1,4 +1,4 @@
-const CACHE = 'parkpay-v2';
+const CACHE = 'parkpay-v3';
 const ASSETS = [
   './',
   './index.html',

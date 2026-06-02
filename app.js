@@ -1098,7 +1098,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Service worker
 if ('serviceWorker' in navigator) {
+  // If the page is already controlled, a later controllerchange means a NEW worker
+  // took over (a fresh deploy) — reload once so the updated code shows immediately.
+  // This makes updates automatic on mobile without clearing Safari's cache by hand.
+  let refreshing = false;
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+  }
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      reg.update().catch(() => {}); // check for a new version each time the app opens
+    }).catch(err => console.log('SW error:', err));
   });
 }
