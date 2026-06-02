@@ -124,6 +124,14 @@
           <span class="ext-key">Council</span>
           <span class="ext-val" id="ext-issuer">—</span>
         </div>
+        <div class="ext-confidence" id="ext-confidence" style="display:none;"></div>
+        <div id="ext-add-council" style="display:none;">
+          <label class="field-label" style="margin-top:14px;">Council payment link (from your ticket)</label>
+          <input id="ext-pay-url" type="url" class="text-input" placeholder="e.g. https://www.council.gov.uk/pay-pcn" autocapitalize="off" autocomplete="off" spellcheck="false" />
+          <label class="field-label" style="margin-top:12px;">Council name (optional)</label>
+          <input id="ext-council-name" type="text" class="text-input" placeholder="e.g. Anytown Council" />
+          <p class="field-hint">We’ll remember this for next time. Look on your ticket for where it says how to pay online.</p>
+        </div>
       </div>
 
       <div id="scan-actions" style="display:none;">
@@ -168,19 +176,31 @@
         Council not recognised from this PCN prefix. Check your ticket and try entering manually, or visit your local council website.
       </div>
 
+      <div id="detail-confidence-msg" class="warning-card" style="display:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="detail-confidence-text"></span>
+      </div>
+
+      <div id="detail-countdown" class="countdown-banner ok"></div>
+
+      <div id="live-details" class="card" style="display:none;"></div>
+
       <div class="card">
         <div class="detail-row"><span class="det-key">PCN reference</span><span class="det-val amber-text" id="detail-pcn-val">—</span></div>
         <div class="detail-row"><span class="det-key">Vehicle reg</span><span class="det-val" id="detail-reg-val">—</span></div>
         <div class="detail-row"><span class="det-key">Issuing council</span><span class="det-val" id="detail-council-val">—</span></div>
+        <div class="detail-row"><span class="det-key">Date of issue</span><input type="date" class="date-input" id="detail-issue-date" /></div>
         <div class="detail-row"><span class="det-key">Date added</span><span class="det-val" id="detail-date-val">—</span></div>
       </div>
 
       <div class="info-card">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Tap "View &amp; pay fine" to open the council's payment page. The real fine amount, deadline and payment options are shown there.
+        The countdown is an estimate (50% discount usually within 14 days of issue) — set the date of issue from your ticket to keep it accurate. Tap "View &amp; pay fine" for the exact amount, deadline and payment options.
       </div>
 
+      <button class="btn-secondary" id="fetch-live-btn" style="display:none;">Fetch live details</button>
       <button class="btn-primary" id="pay-now-btn">View &amp; pay fine</button>
+      <button class="btn-secondary" id="mark-paid-btn">Mark as paid</button>
       <button class="btn-ghost" id="delete-fine-btn">Remove from tracker</button>
     </div>
   </div>
@@ -195,6 +215,11 @@
       </div>
     </div>
     <div class="screen-body">
+      <div class="seg-control" id="history-filter">
+        <button class="seg-btn active" data-filter="all">All</button>
+        <button class="seg-btn" data-filter="unpaid">To pay</button>
+        <button class="seg-btn" data-filter="paid">Paid</button>
+      </div>
       <div id="history-list"></div>
       <div id="history-empty" class="empty-state" style="display:none;">
         <div class="empty-icon">
@@ -238,6 +263,20 @@
         <div class="card-label" style="margin-bottom:12px;">Saved vehicles</div>
         <div id="settings-vehicles-list"></div>
         <button class="btn-secondary" id="settings-add-vehicle" style="margin-top:8px;">+ Add vehicle</button>
+      </div>
+      <div class="card">
+        <div class="card-label" style="margin-bottom:4px;">Notifications</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Deadline reminders</div>
+            <div class="toggle-sub">Alert me when a discount deadline is near</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="reminders-toggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p class="field-hint">Checked when you open the app — keep ParkPay installed and open it regularly so it can remind you in time.</p>
       </div>
       <div class="card">
         <div class="card-label" style="margin-bottom:8px;">About</div>

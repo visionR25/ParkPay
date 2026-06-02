@@ -688,3 +688,112 @@ html, body {
   margin-top: 8px;
   line-height: 1.5;
 }
+
+.ext-confidence {
+  font-size: 12px;
+  color: var(--amber-dark);
+  background: rgba(245, 166, 35, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* ── STATUS PILLS (home / history) ── */
+.status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  align-self: center;
+}
+.status-pill.ok      { background: var(--amber-light); color: var(--amber-dark); }
+.status-pill.urgent  { background: #FDECEC; color: var(--red); }
+.status-pill.expired { background: #FADBD8; color: var(--red); }
+.status-pill.paid    { background: var(--green-bg); color: var(--green); }
+.status-pill.neutral { background: rgba(0,0,0,0.05); color: var(--text-muted); }
+
+/* ── COUNTDOWN BANNER (fine detail) ── */
+.countdown-banner {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 13px 15px;
+  border-radius: var(--radius-card);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+.countdown-banner.ok      { background: var(--amber-light); color: var(--amber-dark); }
+.countdown-banner.urgent  { background: #FDECEC; color: var(--red); }
+.countdown-banner.expired { background: #FADBD8; color: var(--red); }
+.countdown-banner.paid    { background: var(--green-bg); color: var(--green); }
+.countdown-banner.neutral { background: rgba(0,0,0,0.05); color: var(--text-muted); }
+
+/* ── EDITABLE ISSUE DATE ── */
+.date-input {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+.date-input:focus { border-color: var(--amber); outline: none; }
+
+/* paid fines read as resolved in history */
+.history-row.is-paid .hist-ref,
+.history-row.is-paid .hist-meta { opacity: 0.55; }
+
+/* mark-as-paid button flips to a 'paid' look when already paid */
+#mark-paid-btn.is-paid { color: var(--green); }
+
+/* ── HISTORY FILTER (segmented control) ── */
+.seg-control {
+  display: flex;
+  gap: 4px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 14px;
+}
+.seg-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 7px 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.seg-btn.active {
+  background: var(--white);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ── EMPTY STATES ── */
+.empty-inline {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 32px 0;
+}
+.all-clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  background: var(--green-bg);
+  border-radius: var(--radius-card);
+  padding: 24px 16px;
+}
+.all-clear-title { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--text); }
+.all-clear-sub { font-size: 13px; color: var(--text-muted); }
